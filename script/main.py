@@ -70,11 +70,11 @@ class ShopMysql(m):
         print(f"\t[WARNING] Table {self.table} was deleted.")
 
 
-CONNECT = {  ##needed to modify
-            "host": 'localhost',
-            "user": 'root',
-            "password": 'password'
-        }
+CONNECT = {
+    "host": os.environ.get("MYSQL_HOST", 'mysql'),
+    "user": os.environ.get("MYSQL_USER", 'root'),
+    "password": os.environ.get("MYSQL_PASSWORD", 'password')
+}
 
 if __name__ == '__main__':
     my_shop = ShopMysql(**CONNECT)
@@ -84,4 +84,4 @@ if __name__ == '__main__':
     my_shop.add_item(path='items_and_price.json')
 
     my_shop.delete_item("Iron Flame", "The Way Forward")
-    my_shop.delete_shop()
+    #my_shop.delete_shop()
