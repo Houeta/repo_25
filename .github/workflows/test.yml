@@ -16,27 +16,26 @@ jobs:
     runs-on: ubuntu-latest
     services:
       mysql:
-        image: mysql:8.0.29
+        image: mysql
         env:
+          MYSQL_DATABASE: testdb
           MYSQL_ROOT_PASSWORD: password
         ports:
           - 3306:3306
-        options: >-
-          --health-cmd 'mysqladmin ping'
-          --health-interval 10s
-          --health-start-period 10s
-          --health-timeout 5s
-          --health-retries 10
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=5
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
       - name: Setup Python ${{ env.python_version }}
         uses: actions/setup-python@v4
         with:
           python-version: ${{ env.python_version}}
+
       - name: Install python dependencies
         run: |
           pip install mysql-connector-python
+          
       - name: Test app
         run: |
           pytest -v
