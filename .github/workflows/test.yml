@@ -9,7 +9,7 @@ on:
       - "master"
 
 env:
-  python_version: 3.12
+  python_version: '3.12'
 
 jobs:
   db_test:
@@ -31,6 +31,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
       - name: Setup Python ${{ env.python_version }}
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ env.python_version}}
       - name: Install python dependencies
