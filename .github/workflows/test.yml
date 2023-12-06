@@ -36,6 +36,12 @@ jobs:
         run: |
           pip install mysql-connector-python pytest
 
-      - name: Test app
+      - name: Build coverage file
         run: |
-          pytest -v
+          pytest --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov=app tests/ | tee pytest-coverage.txt
+
+      - name: Pytest coverage comment
+        uses: MishaKav/pytest-coverage-comment@main
+        with:
+          pytest-coverage-path: ./pytest-coverage.txt
+          junitxml-path: ./pytest.xml
