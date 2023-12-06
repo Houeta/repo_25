@@ -16,9 +16,10 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
-      contents: read
+      contents: write
+      pages: write
       packages: write
-      
+
     services:
       mysql:
         image: mysql
