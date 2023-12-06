@@ -44,33 +44,34 @@ jobs:
 
       - name: Test with pytest
         run: |
-          pytest --doctest-modules --junitxml=test-results.xml
+          pytest --doctest-modules --junitxml=pytest.xml --cov-report=term-missing:skip-covered > pytest-coverage.txt
 
-      - name: Upload pytest test results
-        uses: actions/upload-artifact@v3
+      # - name: Upload pytest test results
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: pytest-results
+      #     path: test-results.xml
+      #   if: ${{ always() }}
+
+
+
+      - name: Pytest coverage comment
+        if: ${{ github.ref == 'refs/heads/main' }}
+        id: coverageComment
+        uses: MishaKav/pytest-coverage-comment@main
         with:
-          name: pytest-results
-          path: test-results.xml
-        if: ${{ always() }}
-
-
-
-      # - name: Pytest coverage comment
-      #   if: ${{ github.ref == 'refs/heads/main' }}
-      #   id: coverageComment
-      #   uses: MishaKav/pytest-coverage-comment@main
-      #   with:
-      #     hide-comment: true
-      #     pytest-coverage-path: ./data/pytest-coverage.txt
+          hide-comment: true
+          pytest-coverage-path: ./pytest-coverage.txt
   
-      # - name: Update Readme with Coverage Html
-      #   if: ${{ github.ref == 'refs/heads/main' }}
-      #   run: |
-      #     sed -i '/<!-- Pytest Coverage Comment:Begin -->/,/<!-- Pytest Coverage Comment:End -->/c\<!-- Pytest Coverage Comment:Begin -->\n\${{ steps.coverageComment.outputs.coverageHtml }}\n<!-- Pytest Coverage Comment:End -->' ./README.md
+      - name: Update Readme with Coverage Html
+        if: ${{ github.ref == 'refs/heads/main' }}
+        run: |
+          echo "${{ steps.coverageComment.outputs.coverageHtml }}" > ./README.md
+          echo "${{ steps.coverageComment.outputs.summaryReport}}" >> ./README.md
   
-      # - name: Commit & Push changes to Readme
-      #   if: ${{ github.ref == 'refs/heads/main' }}
-      #   uses: actions-js/push@master
-      #   with:
-      #     message: Update coverage on Readme
-      #     github_token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Commit & Push changes to Readme
+        if: ${{ github.ref == 'refs/heads/main' }}
+        uses: actions-js/push@master
+        with:
+          message: Update coverage on Readme
+          github_token: ${{ secrets.GITHUB_TOKEN }}
