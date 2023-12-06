@@ -14,6 +14,11 @@ env:
 jobs:
   db_test:
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+      
     services:
       mysql:
         image: mysql
