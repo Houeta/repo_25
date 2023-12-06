@@ -52,26 +52,3 @@ jobs:
           name: pytest-results
           path: htmlcov/
         if: ${{ always() }}
-
-
-
-      # - name: Pytest coverage comment
-      #   if: ${{ github.ref == 'refs/heads/main' }}
-      #   id: coverageComment
-      #   uses: MishaKav/pytest-coverage-comment@main
-      #   with:
-      #     hide-comment: true
-      #     pytest-xml-coverage-path: pytest.xml
-  
-      # - name: Update Readme with Coverage Html
-      #   if: ${{ github.ref == 'refs/heads/main' }}
-      #   run: |
-      #     echo "${{ steps.coverageComment.outputs.coverageHtml }}" > ./README.md
-      #     echo "${{ steps.coverageComment.outputs.summaryReport}}" >> ./README.md
-  
-      # - name: Commit & Push changes to Readme
-      #   if: ${{ github.ref == 'refs/heads/main' }}
-      #   uses: actions-js/push@master
-      #   with:
-      #     message: Update coverage on Readme
-      #     github_token: ${{ secrets.GITHUB_TOKEN }}
