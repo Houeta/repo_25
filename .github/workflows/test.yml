@@ -50,7 +50,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: pytest-results
-          path: pytest-results.xml
+          path: test-results.xml
         if: ${{ always() }}
 
 
