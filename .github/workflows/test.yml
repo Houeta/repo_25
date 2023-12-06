@@ -40,28 +40,28 @@ jobs:
 
       - name: Install python dependencies
         run: |
-          pip install mysql-connector-python pytest
+          pip install mysql-connector-python pytest pytest-cov
 
-      - name: Build coverage file
+      - name: Test with pytest
         run: |
-          pytest --junitxml=pytest.xml --cov-report=term-missing:skip-covered --cov=app tests/ | tee pytest-coverage.txt
+          pytest --doctest-modules --junitxml=test-results.xml --cov=com --cov-report=xml --cov-report=html
 
-      - name: Pytest coverage comment
-        if: ${{ github.ref == 'refs/heads/main' }}
-        id: coverageComment
-        uses: MishaKav/pytest-coverage-comment@main
-        with:
-          hide-comment: true
-          pytest-coverage-path: ./data/pytest-coverage.txt
+      # - name: Pytest coverage comment
+      #  sdkif: ${{ github.ref == 'refs/heads/main' }}
+      #   id: coverageComment
+      #   uses: MishaKav/pytest-coverage-comment@main
+      #   with:
+      #     hide-comment: true
+      #     pytest-coverage-path: ./data/pytest-coverage.txt
   
-      - name: Update Readme with Coverage Html
-        if: ${{ github.ref == 'refs/heads/main' }}
-        run: |
-          sed -i '/<!-- Pytest Coverage Comment:Begin -->/,/<!-- Pytest Coverage Comment:End -->/c\<!-- Pytest Coverage Comment:Begin -->\n\${{ steps.coverageComment.outputs.coverageHtml }}\n<!-- Pytest Coverage Comment:End -->' ./README.md
+      # - name: Update Readme with Coverage Html
+      #   asdlkif: ${{ github.ref == 'refs/heads/main' }}
+      #   run: |
+      #     sed -i '/<!-- Pytest Coverage Comment:Begin -->/,/<!-- Pytest Coverage Comment:End -->/c\<!-- Pytest Coverage Comment:Begin -->\n\${{ steps.coverageComment.outputs.coverageHtml }}\n<!-- Pytest Coverage Comment:End -->' ./README.md
   
-      - name: Commit & Push changes to Readme
-        if: ${{ github.ref == 'refs/heads/main' }}
-        uses: actions-js/push@master
-        with:
-          message: Update coverage on Readme
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+      # - name: Commit & Push changes to Readme
+      #   a;soif: ${{ github.ref == 'refs/heads/main' }}
+      #   uses: actions-js/push@master
+      #   with:
+      #     message: Update coverage on Readme
+      #     github_token: ${{ secrets.GITHUB_TOKEN }}

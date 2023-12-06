@@ -3,11 +3,11 @@ name: Build and publish a Docker image
 
 on:
   workflow_dispatch:
-  workflow_run:
-    workflows: ["Run Tests"]
-    branches: ["main", "master"]
-    types:
-      - completed
+  # workflow_run:
+  #   workflows: ["Run Tests"]
+  #   branches: ["main", "master"]
+  #   types:
+  #     - completed
 
 
 env:
