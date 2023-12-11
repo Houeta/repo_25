@@ -14,6 +14,12 @@ env:
 jobs:
   db_test:
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      pages: write
+      packages: write
+
     services:
       mysql:
         image: mysql
@@ -34,8 +40,15 @@ jobs:
 
       - name: Install python dependencies
         run: |
-          pip install mysql-connector-python pytest
+          pip install mysql-connector-python pytest pytest-cov
 
-      - name: Test app
+      - name: Test with pytest
         run: |
-          pytest -v
+          pytest -v --cov-report=html --cov=script
+
+      - name: Upload pytest test results
+        uses: actions/upload-artifact@v3
+        with:
+          name: pytest-results
+          path: htmlcov/
+        if: ${{ always() }}
