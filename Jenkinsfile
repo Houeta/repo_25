@@ -15,7 +15,7 @@ pipeline {
 
         stage('Start mysql') {
             steps {
-                sh 'docker compose up -d mysql'
+                sh 'docker-compose up -d mysql'
             }
         }
 
@@ -23,7 +23,7 @@ pipeline {
             steps {
                 timeout(2) {
                     waitUntil() {
-                        sh 'docker compose up -d script'
+                        sh 'docker-compose up -d script'
                     }
                 }
             }
