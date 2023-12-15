@@ -1,6 +1,6 @@
 pipeline {
     agent {
-        label 'master'
+        label 'python docker'
     }
 
     environment {
@@ -15,23 +15,21 @@ pipeline {
 
         stage('Start mysql') {
             steps {
+                echo 'MySQL was started'
                 sh 'docker-compose up -d mysql'
             }
         }
 
-        stage('Build script') {
+        stage('Install dependencies') {
             steps {
-                timeout(2) {
-                    waitUntil() {
-                        sh 'docker-compose up -d script'
-                    }
+                sh 'pip install mysql-connector-python pytest pytest-cov'
                 }
             }
         }
 
         stage('Run Tests') {
             steps {
-                sh 'docker ps -a'
+                sh 'pytest -v --cov-report=html --cov=script'
             }
         }
 
