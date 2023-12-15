@@ -16,7 +16,7 @@ pipeline {
         stage('Start mysql') {
             steps {
                 echo 'MySQL was started'
-                sh 'docker-compose up -d mysql'
+                sh 'docker compose up -d mysql'
             }
         }
 
