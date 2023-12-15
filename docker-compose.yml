@@ -4,11 +4,13 @@ services:
   mysql:
     image: mysql
     restart: always
+    ports:
+      - 3306:3306
     environment:
       MYSQL_ROOT_PASSWORD: $ROOT_PASSWORD
   script:
     build: ./script
-    #restart: always
+    restart: always
     depends_on:
       - mysql
     volumes:
