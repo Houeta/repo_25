@@ -23,7 +23,6 @@ pipeline {
         stage('Install dependencies') {
             steps {
                 sh 'pip install mysql-connector-python pytest pytest-cov'
-                }
             }
         }
 
