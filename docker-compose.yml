@@ -8,6 +8,7 @@ services:
       - 3306:3306
     environment:
       MYSQL_ROOT_PASSWORD: $ROOT_PASSWORD
+  
   script:
     build: ./script
     restart: always
@@ -20,4 +21,9 @@ services:
       MYSQL_HOST: $MYSQL_HOST
       MYSQL_USER: $MYSQL_USER
       MYSQL_PASSWORD: $MYSQL_PASSWORD
+
+  test_script:
+    build: .
+    depends_on:
+      - mysql
     
