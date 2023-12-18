@@ -19,8 +19,6 @@ pipeline {
 
         stage("Prepare environment for tests") {
             steps {
-                echo "Start mysql service"
-                // mysql_id = sh(script:'docker run -d --rm --name mysql -p 3306:3306 --network="jenkins_default" -e MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD mysql:8', returnStdout: true)
                 echo 'Install dependencies'
                 sh '''
                 apt-get update
@@ -52,18 +50,13 @@ pipeline {
             }
         }
         
-        stage('Publish HTML') {
-            steps {
-                publishHTML (target: [alwaysLinkToLastBuild:true, reportDir: 'htmlcov', reportName: "Test Reports", reportTitles: 'My HTML Report' ])
-            }
-        }
     }
     
-    // post {
-    //     always {
-    //          echo "Remove sql container"
-    //          sh 'docker compose down mysql'   
-    //     }
-    // }
+    post {
+        always {
+            echo "Create HTML Report"
+            publishHTML([allowMissing: false, alwaysLinkToLastBuild: true, keepAll: false, reportDir: 'htmlcov', reportFiles: 'index.html', reportName: 'HTML Report', reportTitles: 'Coverage report on $BUILD_IMAGE build.', useWrapperFileDirectly: true])
+        }
+    }
 
 }
