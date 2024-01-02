@@ -8,6 +8,14 @@ pipeline {
         registry = 'pathetic/db_creator'
     }
 
+    parameters {
+        booleanParam( name: 'TOGGLE', defaultValue: true, description: 'Test run' )
+        string(name: 'version', defaultValue: "${env.BUILD_NUMBER}", trim:true, description: "Enter the build version.")
+        text(name: 'releasNotes', defaultValue: 'Added a new feature', description: "Commit new changes in release")
+        password(name: 'passwsord', defaultValue: 'changeme', description: 'Enter a password for MySQL db.')
+        choice(name: 'env', choices: ['DEV', 'QA'], description: "Simple multi-choice parameter") 
+    }
+
     stages {
 
         stage('Checkout') {
@@ -30,6 +38,17 @@ pipeline {
         }
 
         stage('Test') {
+            input {
+                message "Ready to build image?"
+                ok "Yes"
+                submitter "admin"
+                submitterParameter "SUBMITTER_USERNAME"
+            }
+            when{
+                expressions {
+                    return params.TOGGLE == true
+                }
+            }
             steps {
                 echo 'Wait until mysql service is up'
                 timeout(10) {
